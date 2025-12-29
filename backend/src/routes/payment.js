@@ -7,41 +7,39 @@ import {
   processPayment,
 } from '../services/payment.js';
 import { buildPaymentTransaction } from '../services/movement.js';
+import { optionalMerchantAuth } from '../middleware/auth.js';
+import {
+  validatePaymentCreate,
+  validatePaymentId,
+  validateTransactionSubmit,
+  validate
+} from '../middleware/validate.js';
+import { paymentLimiter, transactionLimiter } from '../middleware/rate-limit.js';
 
 const router = Router();
 
 /**
  * POST /payments - Create a new payment request
+ * Optional auth - merchants can create with API key for better tracking
  */
 router.post(
   '/',
+  optionalMerchantAuth,
+  paymentLimiter,
+  validatePaymentCreate,
+  validate,
   asyncHandler(async (req, res) => {
-    const { merchantAddress, amount, memo } = req.body;
-
-    if (!merchantAddress || !amount) {
-      return res.status(400).json({
-        error: 'Missing required fields: merchantAddress, amount',
-      });
-    }
-
-    if (!isValidAddress(merchantAddress)) {
-      return res.status(400).json({
-        error: 'Invalid merchant address format',
-      });
-    }
-
-    const amountNum = parseFloat(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      return res.status(400).json({
-        error: 'Amount must be a positive number',
-      });
-    }
+    const { merchantAddress, amount, memo, expiresIn } = req.body;
 
     const payment = await createPayment(merchantAddress, amount, memo, {
       baseUrl: process.env.BASE_URL,
+      expiresIn: expiresIn || 300, // 5 minutes default
     });
 
-    res.status(201).json(payment);
+    res.status(201).json({
+      success: true,
+      payment,
+    });
   })
 );
 
@@ -108,18 +106,16 @@ router.post(
 
 /**
  * POST /payments/:id/submit - Submit signed transaction for payment
+ * Public - mobile app submits transactions
  */
 router.post(
   '/:id/submit',
+  transactionLimiter,
+  validateTransactionSubmit,
+  validate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { rawTxnHex, publicKey, signature, senderAddress } = req.body;
-
-    if (!rawTxnHex || !publicKey || !signature) {
-      return res.status(400).json({
-        error: 'Missing required fields: rawTxnHex, publicKey, signature',
-      });
-    }
 
     const result = await processPayment(
       id,

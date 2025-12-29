@@ -83,10 +83,12 @@ export function formatAmount(amountBigInt, decimals = 6) {
  */
 export const PaymentStatus = {
   PENDING: 'pending',
+  PROCESSING: 'processing',
   SUBMITTED: 'submitted',
   CONFIRMED: 'confirmed',
   FAILED: 'failed',
   EXPIRED: 'expired',
+  REFUNDED: 'refunded',
 };
 
 /**

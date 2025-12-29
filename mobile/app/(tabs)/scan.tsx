@@ -1,17 +1,20 @@
 // Scan Tab - QR Code and NFC payment options
 import { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, Pressable, Modal, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal, TextInput, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { colors, spacing, borderRadius, typography } from '@/constants/theme';
 import { QRScanner } from '@/components/scan/qr-scanner';
+import { useNfc } from '@/hooks/use-nfc';
 
 export default function ScanTab() {
   const [showScanner, setShowScanner] = useState(false);
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [manualCode, setManualCode] = useState('');
+
+  const { isSupported, isEnabled, isActive, triggerIosScan, goToSettings } = useNfc();
 
   const handleScan = useCallback((paymentId: string) => {
     setShowScanner(false);
@@ -29,9 +32,33 @@ export default function ScanTab() {
     router.push(`/pay/${trimmedCode}`);
   };
 
-  const handleTapToPay = () => {
+  const handleTapToPay = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    Alert.alert('NFC Ready', 'Hold your phone near the payment terminal');
+
+    if (!isSupported) {
+      Alert.alert('NFC Not Supported', 'Your device does not support NFC payments.');
+      return;
+    }
+
+    if (!isEnabled) {
+      Alert.alert(
+        'NFC Disabled',
+        'Please enable NFC in your device settings to use tap-to-pay.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Open Settings', onPress: goToSettings },
+        ]
+      );
+      return;
+    }
+
+    if (Platform.OS === 'ios') {
+      // iOS requires explicit scan
+      await triggerIosScan();
+    } else {
+      // Android - NFC should already be listening in background
+      Alert.alert('Ready to Pay', 'Hold your phone near the payment terminal');
+    }
   };
 
   return (
@@ -71,8 +98,20 @@ export default function ScanTab() {
         {/* NFC Status */}
         <View style={styles.nfcStatus}>
           <View style={styles.nfcIndicator}>
-            <Ionicons name="radio" size={20} color={colors.success} />
-            <Text style={styles.nfcText}>NFC Ready</Text>
+            <Ionicons
+              name={isActive ? "radio" : isEnabled ? "radio-outline" : "radio-button-off"}
+              size={20}
+              color={!isSupported ? colors.textMuted : isEnabled ? colors.success : colors.warning}
+            />
+            <Text style={styles.nfcText}>
+              {!isSupported
+                ? "NFC Not Supported"
+                : !isEnabled
+                ? "NFC Disabled"
+                : isActive
+                ? "NFC Scanning..."
+                : "NFC Ready"}
+            </Text>
           </View>
         </View>
       </View>

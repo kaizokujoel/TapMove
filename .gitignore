@@ -91,3 +91,13 @@ backend/data/
 
 # Mobile specific env
 mobile/.env
+
+# Logs directory
+logs/
+
+# Test outputs
+backend/tests/*.log
+test-results/
+
+# Prompts (generated, delete after use)
+prompts/

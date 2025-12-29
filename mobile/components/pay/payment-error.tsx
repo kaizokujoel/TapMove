@@ -27,6 +27,14 @@ const ERROR_CONFIG: Record<PaymentError['code'], { icon: string; title: string }
     icon: 'close-circle-outline',
     title: 'Transaction Failed',
   },
+  SIGNING_REJECTED: {
+    icon: 'hand-left-outline',
+    title: 'Signing Cancelled',
+  },
+  TIMEOUT: {
+    icon: 'hourglass-outline',
+    title: 'Request Timed Out',
+  },
   UNKNOWN: {
     icon: 'alert-circle-outline',
     title: 'Something Went Wrong',
@@ -35,7 +43,7 @@ const ERROR_CONFIG: Record<PaymentError['code'], { icon: string; title: string }
 
 export function PaymentErrorDisplay({ error, onRetry, onCancel }: PaymentErrorProps) {
   const config = ERROR_CONFIG[error.code] || ERROR_CONFIG.UNKNOWN;
-  const canRetry = error.code !== 'PAYMENT_EXPIRED' && error.code !== 'INSUFFICIENT_BALANCE';
+  const canRetry = !['PAYMENT_EXPIRED', 'INSUFFICIENT_BALANCE'].includes(error.code);
 
   return (
     <View style={styles.container}>
@@ -72,6 +80,33 @@ export function PaymentErrorDisplay({ error, onRetry, onCancel }: PaymentErrorPr
           <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
           <Text style={styles.helpText}>
             Check your internet connection
+          </Text>
+        </View>
+      )}
+
+      {error.code === 'TIMEOUT' && (
+        <View style={styles.helpContainer}>
+          <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
+          <Text style={styles.helpText}>
+            The request took too long. Please try again.
+          </Text>
+        </View>
+      )}
+
+      {error.code === 'SIGNING_REJECTED' && (
+        <View style={styles.helpContainer}>
+          <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
+          <Text style={styles.helpText}>
+            You cancelled the signing. Tap "Try Again" to confirm.
+          </Text>
+        </View>
+      )}
+
+      {error.code === 'TRANSACTION_FAILED' && (
+        <View style={styles.helpContainer}>
+          <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
+          <Text style={styles.helpText}>
+            The transaction could not be processed. Please try again or contact support.
           </Text>
         </View>
       )}

@@ -8,6 +8,8 @@ import {
   callViewFunction,
   requestFaucet,
 } from '../services/movement.js';
+import { validateGenerateHash, validateTransactionSubmit, validateAddress, validate } from '../middleware/validate.js';
+import { transactionLimiter, faucetLimiter } from '../middleware/rate-limit.js';
 
 const router = Router();
 
@@ -16,20 +18,17 @@ const router = Router();
  */
 router.post(
   '/generate-hash',
+  transactionLimiter,
+  validateGenerateHash,
+  validate,
   asyncHandler(async (req, res) => {
     const { sender, function: func, typeArguments, functionArguments } = req.body;
-
-    if (!sender || !func || !Array.isArray(functionArguments)) {
-      return res.status(400).json({
-        error: 'Missing required fields: sender, function, or functionArguments',
-      });
-    }
 
     const result = await buildTransaction(
       sender,
       func,
-      typeArguments,
-      functionArguments
+      typeArguments || [],
+      functionArguments || []
     );
 
     res.json({
@@ -45,14 +44,11 @@ router.post(
  */
 router.post(
   '/submit-transaction',
+  transactionLimiter,
+  validateTransactionSubmit,
+  validate,
   asyncHandler(async (req, res) => {
     const { rawTxnHex, publicKey, signature } = req.body;
-
-    if (!rawTxnHex || !publicKey || !signature) {
-      return res.status(400).json({
-        error: 'Missing rawTxnHex, publicKey, or signature',
-      });
-    }
 
     const result = await submitTransaction(rawTxnHex, publicKey, signature);
 
@@ -66,14 +62,16 @@ router.post(
 
 /**
  * POST /faucet - Request faucet tokens
+ * Rate limited more strictly
  */
 router.post(
   '/faucet',
+  faucetLimiter,
   asyncHandler(async (req, res) => {
     const { address, amount } = req.body;
 
     if (!address || !amount) {
-      return res.status(400).json({ error: 'Missing address or amount' });
+      return res.status(400).json({ success: false, error: 'Missing address or amount' });
     }
 
     const data = await requestFaucet(address, amount);

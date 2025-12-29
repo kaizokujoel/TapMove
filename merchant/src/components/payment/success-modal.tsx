@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { CheckCircle, ExternalLink, X } from "lucide-react";
+import { CheckCircle, ExternalLink, X, Download, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatUSDC, shortenAddress } from "@/lib/utils";
+import { downloadReceipt, printReceipt } from "@/lib/receipt";
 import type { PaymentSession } from "@/types";
 
 interface SuccessModalProps {
   payment: PaymentSession;
+  merchantName?: string;
   onClose: () => void;
   onNewPayment: () => void;
   autoDismiss?: boolean;
@@ -16,6 +18,7 @@ interface SuccessModalProps {
 
 export function SuccessModal({
   payment,
+  merchantName = "TapMove Merchant",
   onClose,
   onNewPayment,
   autoDismiss = true,
@@ -130,6 +133,28 @@ export function SuccessModal({
               </a>
             </div>
           )}
+        </div>
+
+        {/* Receipt Actions */}
+        <div className="mb-4 flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => downloadReceipt(payment, merchantName)}
+            className="flex-1 gap-1"
+          >
+            <Download className="h-4 w-4" />
+            Download
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => printReceipt(payment, merchantName)}
+            className="flex-1 gap-1"
+          >
+            <Printer className="h-4 w-4" />
+            Print
+          </Button>
         </div>
 
         {/* Actions */}

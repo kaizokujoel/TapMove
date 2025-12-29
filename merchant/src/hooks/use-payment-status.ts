@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getPaymentStatus } from "@/lib/api";
 import type { PaymentSession } from "@/types";
@@ -14,16 +14,42 @@ interface UsePaymentStatusOptions {
   onError?: (error: Error) => void;
 }
 
+// Adaptive polling intervals based on time elapsed
+const POLL_INTERVALS = {
+  initial: 1000,     // First 30 seconds: 1 second
+  standard: 2000,    // 30-60 seconds: 2 seconds
+  relaxed: 3000,     // 60-120 seconds: 3 seconds
+  slow: 5000,        // 120+ seconds: 5 seconds
+};
+
+function getAdaptivePollInterval(createdAt: number): number {
+  const elapsed = Date.now() - createdAt;
+  const elapsedSeconds = elapsed / 1000;
+
+  if (elapsedSeconds < 30) return POLL_INTERVALS.initial;
+  if (elapsedSeconds < 60) return POLL_INTERVALS.standard;
+  if (elapsedSeconds < 120) return POLL_INTERVALS.relaxed;
+  return POLL_INTERVALS.slow;
+}
+
 export function usePaymentStatus({
   paymentId,
   enabled = true,
-  pollInterval = 2000,
+  pollInterval,
   onCompleted,
   onExpired,
   onError,
 }: UsePaymentStatusOptions) {
   const queryClient = useQueryClient();
   const previousStatus = useRef<string | null>(null);
+  const createdAtRef = useRef<number>(Date.now());
+
+  // Reset creation time when payment ID changes
+  useEffect(() => {
+    if (paymentId) {
+      createdAtRef.current = Date.now();
+    }
+  }, [paymentId]);
 
   const {
     data: payment,
@@ -42,7 +68,8 @@ export function usePaymentStatus({
       if (data.state.data?.status !== "pending") {
         return false;
       }
-      return pollInterval;
+      // Use provided interval or adaptive polling
+      return pollInterval ?? getAdaptivePollInterval(createdAtRef.current);
     },
     staleTime: 1000, // Consider data stale after 1 second
   });

@@ -16,9 +16,24 @@ export interface PaymentRequest {
 export type PaymentStatus = 'pending' | 'completed' | 'expired' | 'cancelled' | 'failed';
 
 export interface PaymentError {
-  code: 'INSUFFICIENT_BALANCE' | 'PAYMENT_EXPIRED' | 'NETWORK_ERROR' | 'TRANSACTION_FAILED' | 'UNKNOWN';
+  code: PaymentErrorCode;
   message: string;
+  details?: {
+    required?: string;
+    available?: string;
+    expiredAt?: number;
+    txHash?: string;
+  };
 }
+
+export type PaymentErrorCode =
+  | 'INSUFFICIENT_BALANCE'
+  | 'PAYMENT_EXPIRED'
+  | 'NETWORK_ERROR'
+  | 'TRANSACTION_FAILED'
+  | 'SIGNING_REJECTED'
+  | 'TIMEOUT'
+  | 'UNKNOWN';
 
 export interface Transaction {
   id: string;

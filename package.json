@@ -1,0 +1,28 @@
+{
+  "name": "tapmove",
+  "version": "1.0.0",
+  "description": "TapMove - NFC Tap-to-Pay on Movement Network",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:merchant": "cd merchant && npm run dev",
+    "dev:mobile": "cd mobile && npx expo start",
+    "start:backend": "cd backend && npm start",
+    "start:merchant": "cd merchant && npm start",
+    "test": "cd backend && npm test",
+    "test:e2e": "cd backend && npm run test:e2e",
+    "seed": "cd backend && npm run seed",
+    "install:all": "npm install && cd backend && npm install && cd ../merchant && npm install && cd ../mobile && npm install",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:merchant": "cd merchant && npm run lint"
+  },
+  "keywords": [
+    "crypto",
+    "payments",
+    "nfc",
+    "movement",
+    "blockchain"
+  ],
+  "author": "",
+  "license": "MIT"
+}
