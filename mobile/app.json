@@ -1,0 +1,99 @@
+{
+  "expo": {
+    "name": "TapMove",
+    "slug": "tapmove",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "tapmove",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "ios": {
+      "usesAppleSignIn": true,
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tapmove.app",
+      "associatedDomains": ["webcredentials:<your-associated-domain>"],
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
+        "NFCReaderUsageDescription": "TapMove uses NFC to process tap-to-pay transactions",
+        "com.apple.developer.nfc.readersession.iso7816.select-identifiers": [
+          "A0000002471001"
+        ]
+      },
+      "entitlements": {
+        "com.apple.developer.nfc.readersession.formats": ["TAG", "NDEF"]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#0f172a"
+      },
+      "package": "com.tapmove.app",
+      "permissions": [
+        "android.permission.NFC"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "tapmove",
+              "host": "*",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        },
+        {
+          "action": "android.nfc.action.NDEF_DISCOVERED",
+          "data": [
+            {
+              "scheme": "tapmove"
+            }
+          ],
+          "category": ["DEFAULT"]
+        }
+      ]
+    },
+    "extra": {
+      "privyAppId": "<APP_ID>",
+      "privyClientId": "<CLIENT_ID>",
+      "passkeyAssociatedDomain": "https://<your-associated-domain>"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-apple-authentication",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.5"
+          },
+          "android": {
+            "compileSdkVersion": 35
+          }
+        }
+      ],
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow TapMove to use Face ID for secure payments"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

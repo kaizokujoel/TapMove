@@ -1,0 +1,10 @@
+[package]
+name = "TapMove"
+version = "0.0.1"
+authors = []
+
+[addresses]
+tapmove = "_"
+
+[dependencies]
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework/", rev = "aptos-release-v1.28" }
