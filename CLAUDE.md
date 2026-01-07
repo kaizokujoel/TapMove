@@ -4,22 +4,27 @@ TapMove is a mobile-first payment app enabling tap-to-pay cryptocurrency transac
 
 ---
 
-## Git Configuration (MANDATORY)
+## Git Configuration
 
-**ALWAYS use these credentials for ALL commits and pushes:**
-
-| Setting | Value |
-|---------|-------|
-| **User Name** | `gabrielantonyxaviour` |
-| **User Email** | `gabrielantony56@gmail.com` |
-
-Before making any commits, ALWAYS run:
-```bash
-git config user.name "gabrielantonyxaviour"
-git config user.email "gabrielantony56@gmail.com"
+**Account:** kaizokujoel (Joel Peter)
+```
+user.name: kaizokujoel
+user.email: joelpeter2003@gmail.com
 ```
 
-**DO NOT use any other git identity for this project.**
+### Auto-Commit Rule
+**IMPORTANT:** After EVERY response that modifies code/files, you MUST run:
+```bash
+cd /Users/gabrielantonyxaviour/Documents/starters/movement/TapMove && \
+git add -A && \
+git commit -m "$(cat <<'EOF'
+<concise description of changes>
+EOF
+)" && \
+git push
+```
+
+This ensures all changes are tracked and pushed to kaizokujoel/TapMove.
 
 ---
 
