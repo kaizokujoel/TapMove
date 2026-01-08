@@ -26,8 +26,6 @@
 10. [Competitive Analysis](#competitive-analysis)
 11. [Traction & Validation](#traction--validation)
 12. [Future Roadmap](#future-roadmap)
-13. [Team](#team)
-14. [Demo & Links](#demo--links)
 
 ---
 
@@ -472,69 +470,6 @@ Break-even: ~10,000 transactions/month (operational costs)
 
 ---
 
-## Team
-
-### Core Contributors
-
-**Joel Peter** - Lead Developer
-- Full-stack engineer with blockchain experience
-- Previously built DeFi applications on Ethereum
-- GitHub: [@kaizokujoel](https://github.com/kaizokujoel)
-
-*(Add other team members as applicable)*
-
-### Advisors
-
-*(List advisors if applicable)*
-
-### Why We'll Win
-
-1. **Builder Mentality** - Ship fast, iterate faster
-2. **User Obsession** - Every decision starts with UX
-3. **Movement Believers** - Committed to the ecosystem
-4. **Open Source** - Transparent development, community trust
-
----
-
-## Demo & Links
-
-### Live Demo
-
-| Platform | Link |
-|----------|------|
-| **Video Demo** | [YouTube/Loom Link] |
-| **Mobile App** | [Expo/TestFlight Link] |
-| **Merchant Terminal** | [Deployed URL] |
-| **Backend API** | [API Base URL] |
-
-### Source Code
-
-| Repository | Link |
-|------------|------|
-| **Monorepo** | [GitHub Link] |
-| **Smart Contracts** | `/contracts` directory |
-| **Mobile App** | `/mobile` directory |
-| **Merchant Terminal** | `/merchant` directory |
-| **Backend** | `/backend` directory |
-
-### Documentation
-
-| Resource | Link |
-|----------|------|
-| **App Flow Guide** | `APP_FLOW.md` |
-| **Product Requirements** | `PRD.md` |
-| **API Documentation** | `backend/README.md` |
-
-### Contract Addresses (Testnet)
-
-| Contract | Address |
-|----------|---------|
-| **TapMove Module** | `0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5` |
-| **Network** | Movement Testnet (Chain ID: 250) |
-| **Explorer** | [Movement Explorer](https://explorer.movementnetwork.xyz) |
-
----
-
 ## Summary
 
 ### The Problem
@@ -555,15 +490,6 @@ We're seeking:
 2. **Movement Grants** - Fund mainnet deployment and growth
 3. **Ecosystem Partnerships** - Merchants, wallets, and DeFi protocols
 4. **Community Feedback** - Make TapMove better together
-
----
-
-## Contact
-
-- **Email**: [your-email]
-- **Twitter**: [@TapMove]
-- **Discord**: [TapMove Community]
-- **GitHub**: [github.com/your-org/TapMove]
 
 ---
 
