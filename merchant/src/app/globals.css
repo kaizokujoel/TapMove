@@ -120,6 +120,26 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    /* Privy modal customization - TapMove dark theme */
+    --privy-color-background: #0f172a;
+    --privy-color-background-2: #1e293b;
+    --privy-color-background-3: #334155;
+    --privy-color-foreground: #f8fafc;
+    --privy-color-foreground-2: #94a3b8;
+    --privy-color-foreground-3: #64748b;
+    --privy-color-foreground-4: #475569;
+    --privy-color-accent: #FF6B00;
+    --privy-color-accent-light: #ff8533;
+    --privy-color-accent-lightest: #ffad70;
+    --privy-color-accent-dark: #cc5500;
+    --privy-color-accent-darkest: #994000;
+    --privy-color-success: #22c55e;
+    --privy-color-error: #ef4444;
+    --privy-color-error-light: #fca5a5;
+    --privy-border-radius-sm: 6px;
+    --privy-border-radius-md: 8px;
+    --privy-border-radius-lg: 10px;
   }
 }
 

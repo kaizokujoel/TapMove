@@ -17,13 +17,13 @@ export interface NetworkConfig {
 
 export const NETWORKS: Record<NetworkType, NetworkConfig> = {
   testnet: {
-    name: 'Movement Porto Testnet',
-    chainId: '177',
-    nodeUrl: 'https://aptos.testnet.porto.movementlabs.xyz/v1',
-    explorerUrl: 'https://explorer.movementlabs.xyz',
-    faucetUrl: 'https://faucet.testnet.porto.movementlabs.xyz',
+    name: 'Movement Testnet',
+    chainId: '250',
+    nodeUrl: 'https://testnet.movementnetwork.xyz/v1',
+    explorerUrl: 'https://explorer.movementnetwork.xyz',
+    faucetUrl: 'https://faucet.testnet.movementnetwork.xyz/',
     contracts: {
-      tapmove: process.env.EXPO_PUBLIC_TAPMOVE_ADDRESS || '0x_YOUR_DEPLOYED_ADDRESS',
+      tapmove: process.env.EXPO_PUBLIC_TAPMOVE_ADDRESS || '0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5',
       usdc: '0x1::aptos_coin::AptosCoin', // Using MOVE for testing
     },
   },
@@ -31,7 +31,7 @@ export const NETWORKS: Record<NetworkType, NetworkConfig> = {
     name: 'Movement Mainnet',
     chainId: '126',
     nodeUrl: 'https://mainnet.movementnetwork.xyz/v1',
-    explorerUrl: 'https://explorer.movementlabs.xyz',
+    explorerUrl: 'https://explorer.movementnetwork.xyz',
     contracts: {
       tapmove: '',
       usdc: '', // Will be set when USDC is deployed

@@ -66,13 +66,7 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
           logo: "/logo.png",
           showWalletLoginFirst: false,
         },
-        loginMethods: ["email", "wallet", "google"],
-        embeddedWallets: {
-          ethereum: {
-            createOnLogin: "all-users",
-          },
-          showWalletUIs: true,
-        },
+        loginMethods: ["email"],
         mfa: {
           noPromptOnMfaRequired: false,
         },

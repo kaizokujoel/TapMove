@@ -1,15 +1,17 @@
 {
   "testnet": {
-    "name": "Movement Porto Testnet",
-    "chainId": "177",
-    "nodeUrl": "https://aptos.testnet.porto.movementlabs.xyz/v1",
-    "faucetUrl": "https://faucet.testnet.porto.movementlabs.xyz",
-    "explorerUrl": "https://explorer.movementlabs.xyz",
+    "name": "Movement Testnet",
+    "chainId": "250",
+    "nodeUrl": "https://testnet.movementnetwork.xyz/v1",
+    "faucetUrl": "https://faucet.testnet.movementnetwork.xyz/",
+    "explorerUrl": "https://explorer.movementnetwork.xyz",
     "addresses": {
-      "tapmove": "0x_YOUR_DEPLOYED_ADDRESS",
+      "tapmove": "0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5",
       "usdc": "0x1::aptos_coin::AptosCoin"
     },
-    "notes": "For testing, USDC is replaced with AptosCoin (MOVE). Deploy tapmove module and update address."
+    "deployedAt": "2025-12-29",
+    "transactionHash": "0x888ca53359ba969034ba353195068419f1297cd5725f0f91808d88ffc3cb4814",
+    "notes": "For testing, USDC is replaced with AptosCoin (MOVE). TapMove contracts deployed."
   },
   "mainnet": {
     "name": "Movement Mainnet",

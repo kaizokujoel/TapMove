@@ -4,7 +4,7 @@ version = "0.0.1"
 authors = []
 
 [addresses]
-tapmove = "_"
+tapmove = "0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework/", rev = "aptos-release-v1.28" }

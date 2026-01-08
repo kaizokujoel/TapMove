@@ -18,13 +18,13 @@ const NETWORK = process.env.NETWORK || 'testnet';
 
 const NETWORK_CONFIG = {
   testnet: {
-    nodeUrl: 'https://aptos.testnet.porto.movementlabs.xyz/v1',
-    faucetUrl: 'https://faucet.testnet.porto.movementlabs.xyz',
-    explorerUrl: 'https://explorer.movementlabs.xyz',
+    nodeUrl: 'https://testnet.movementnetwork.xyz/v1',
+    faucetUrl: 'https://faucet.testnet.movementnetwork.xyz/',
+    explorerUrl: 'https://explorer.movementnetwork.xyz',
   },
   mainnet: {
     nodeUrl: 'https://mainnet.movementnetwork.xyz/v1',
-    explorerUrl: 'https://explorer.movementlabs.xyz',
+    explorerUrl: 'https://explorer.movementnetwork.xyz',
   },
 };
 
@@ -34,7 +34,7 @@ const MOVEMENT_NODE_URL = process.env.MOVEMENT_NODE_URL || config.nodeUrl;
 const FAUCET_URL = process.env.MOVEMENT_FAUCET_URL || config.faucetUrl;
 
 // TapMove module address (deployed contract)
-const TAPMOVE_MODULE_ADDRESS = process.env.TAPMOVE_MODULE_ADDRESS || '0x_YOUR_DEPLOYED_ADDRESS';
+const TAPMOVE_MODULE_ADDRESS = process.env.TAPMOVE_MODULE_ADDRESS || '0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5';
 
 // Coin type - USDC on mainnet, AptosCoin (MOVE) for testing
 const COIN_TYPE = process.env.USDC_ADDRESS || '0x1::aptos_coin::AptosCoin';

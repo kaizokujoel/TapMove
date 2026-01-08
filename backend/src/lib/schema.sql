@@ -55,3 +55,4 @@ CREATE INDEX IF NOT EXISTS idx_payments_expires ON payments(expires_at);
 CREATE INDEX IF NOT EXISTS idx_payments_created ON payments(created_at);
 CREATE INDEX IF NOT EXISTS idx_transactions_merchant ON transactions(merchant_address);
 CREATE INDEX IF NOT EXISTS idx_transactions_payment ON transactions(payment_id);
+CREATE INDEX IF NOT EXISTS idx_merchants_api_key ON merchants(api_key_hash);

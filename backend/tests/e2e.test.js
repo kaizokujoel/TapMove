@@ -2,12 +2,12 @@
  * TapMove E2E Integration Tests
  *
  * Run with: npm test
- * Requires backend to be running on localhost:3001
+ * Requires backend to be running on localhost:4001
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
-const API_BASE = process.env.API_URL || 'http://localhost:3001';
+const API_BASE = process.env.API_URL || 'http://localhost:4001';
 
 // Test wallet addresses (0x-prefixed 64 hex chars)
 const TEST_MERCHANT_ADDRESS = '0x' + 'a'.repeat(64);

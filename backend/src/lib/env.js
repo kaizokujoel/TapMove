@@ -39,7 +39,7 @@ if (missingRecommended.length > 0 && process.env.NODE_ENV !== 'test') {
  */
 export const config = {
   // Server configuration
-  port: parseInt(process.env.PORT || '3001', 10),
+  port: parseInt(process.env.PORT || '4001', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
 
   // Movement Network
@@ -70,7 +70,7 @@ export const config = {
 
   // URLs
   urls: {
-    base: process.env.BASE_URL || `http://localhost:${process.env.PORT || 3001}`,
+    base: process.env.BASE_URL || `http://localhost:${process.env.PORT || 4001}`,
     merchant: process.env.MERCHANT_URL || 'http://localhost:3000',
   },
 

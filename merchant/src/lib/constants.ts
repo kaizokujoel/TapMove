@@ -15,25 +15,25 @@ export interface NetworkConfig {
 
 export const NETWORKS: Record<NetworkType, NetworkConfig> = {
   testnet: {
-    name: 'Movement Porto Testnet',
-    chainId: '177',
-    rpcUrl: process.env.NEXT_PUBLIC_MOVEMENT_RPC || 'https://aptos.testnet.porto.movementlabs.xyz/v1',
-    explorerUrl: 'https://explorer.movementlabs.xyz',
-    faucetUrl: 'https://faucet.testnet.porto.movementlabs.xyz',
+    name: 'Movement Testnet',
+    chainId: '250',
+    rpcUrl: process.env.NEXT_PUBLIC_MOVEMENT_RPC || 'https://testnet.movementnetwork.xyz/v1',
+    explorerUrl: 'https://explorer.movementnetwork.xyz',
+    faucetUrl: 'https://faucet.testnet.movementnetwork.xyz/',
   },
   mainnet: {
     name: 'Movement Mainnet',
     chainId: '126',
     rpcUrl: 'https://mainnet.movementnetwork.xyz/v1',
-    explorerUrl: 'https://explorer.movementlabs.xyz',
+    explorerUrl: 'https://explorer.movementnetwork.xyz',
   },
 };
 
 // Contract Addresses
 export const CONTRACTS = {
-  // TapMove module address (update after deployment)
-  PAYMENT_MODULE: process.env.NEXT_PUBLIC_PAYMENT_MODULE || '0x_YOUR_DEPLOYED_ADDRESS::payment',
-  MERCHANT_MODULE: process.env.NEXT_PUBLIC_MERCHANT_MODULE || '0x_YOUR_DEPLOYED_ADDRESS::merchant',
+  // TapMove module address (deployed to Movement testnet)
+  PAYMENT_MODULE: process.env.NEXT_PUBLIC_PAYMENT_MODULE || '0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5::payment',
+  MERCHANT_MODULE: process.env.NEXT_PUBLIC_MERCHANT_MODULE || '0x2b633f672b485166e89bb90903962d5ad26bbf70ce079ed484bae518d89d2dc5::merchant',
 
   // USDC address (using AptosCoin/MOVE for testnet)
   USDC_ADDRESS: process.env.NEXT_PUBLIC_USDC_ADDRESS || '0x1::aptos_coin::AptosCoin',

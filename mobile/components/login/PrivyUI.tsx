@@ -1,4 +1,5 @@
 import { useLogin } from '@privy-io/expo/ui';
+import { useCreateWallet } from '@privy-io/expo/extended-chains';
 import {
   View,
   Text,
@@ -10,12 +11,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useState, useEffect, useRef } from 'react';
 import { colors, spacing, borderRadius, typography } from '@/constants/theme';
+import { createMovementWallet } from '@/lib/privy-movement';
 
 const LOGIN_METHODS = [
   { name: 'Email', icon: 'mail' },
-  { name: 'Google', icon: 'logo-google' },
-  { name: 'Apple', icon: 'logo-apple' },
-  { name: 'Twitter', icon: 'logo-twitter' },
 ];
 
 export default function PrivyUI() {
@@ -25,7 +24,18 @@ export default function PrivyUI() {
   const slideAnim = useRef(new Animated.Value(30)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
-  const { login } = useLogin();
+  const { createWallet } = useCreateWallet();
+  const { login } = useLogin({
+    onSuccess: async ({ user }) => {
+      // Auto-create Movement wallet after successful login
+      try {
+        await createMovementWallet(user, createWallet);
+      } catch (walletError) {
+        console.error('Error creating wallet after login:', walletError);
+        // Don't set error here - user is still logged in
+      }
+    },
+  });
 
   useEffect(() => {
     // Entry animations
@@ -64,7 +74,7 @@ export default function PrivyUI() {
     setIsLoading(true);
 
     login({
-      loginMethods: ['email', 'google', 'apple', 'twitter'],
+      loginMethods: ['email'],
     })
       .then(() => setIsLoading(false))
       .catch((err) => {

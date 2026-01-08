@@ -16,7 +16,9 @@
       "usesAppleSignIn": true,
       "supportsTablet": true,
       "bundleIdentifier": "com.tapmove.app",
-      "associatedDomains": ["webcredentials:<your-associated-domain>"],
+      "associatedDomains": [
+        "webcredentials:<your-associated-domain>"
+      ],
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
@@ -27,7 +29,10 @@
         ]
       },
       "entitlements": {
-        "com.apple.developer.nfc.readersession.formats": ["TAG", "NDEF"]
+        "com.apple.developer.nfc.readersession.formats": [
+          "TAG",
+          "NDEF"
+        ]
       }
     },
     "android": {
@@ -50,7 +55,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         },
         {
           "action": "android.nfc.action.NDEF_DISCOVERED",
@@ -59,13 +67,15 @@
               "scheme": "tapmove"
             }
           ],
-          "category": ["DEFAULT"]
+          "category": [
+            "DEFAULT"
+          ]
         }
       ]
     },
     "extra": {
-      "privyAppId": "<APP_ID>",
-      "privyClientId": "<CLIENT_ID>",
+      "privyAppId": "cmjmydj7x0222lb0d8mmx2rpf",
+      "privyClientId": "cmjmydj7x0222lb0d8mmx2rpf",
       "passkeyAssociatedDomain": "https://<your-associated-domain>"
     },
     "plugins": [

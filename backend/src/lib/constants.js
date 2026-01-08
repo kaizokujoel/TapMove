@@ -36,7 +36,7 @@ export const NETWORK_CONFIG = MOVEMENT_CONFIG[CURRENT_NETWORK];
 
 // API Configuration
 export const API_CONFIG = {
-  port: parseInt(process.env.PORT || '3001', 10),
+  port: parseInt(process.env.PORT || '4001', 10),
   corsOrigins: (process.env.CORS_ORIGINS || 'http://localhost:3000,http://localhost:8081').split(','),
 };
 

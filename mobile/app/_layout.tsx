@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Constants from 'expo-constants';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { PrivyProvider, usePrivy } from '@privy-io/expo';
 import { PrivyElements } from '@privy-io/expo/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import {
 } from '@expo-google-fonts/inter';
 import { useFonts } from 'expo-font';
 import * as Linking from 'expo-linking';
+import NfcManager from 'react-native-nfc-manager';
 import { colors } from '@/constants/theme';
 import { NfcProvider } from '@/providers/nfc-provider';
 import { ErrorBoundary } from '@/components/shared/error-boundary';
@@ -65,6 +67,58 @@ function RootLayoutNav() {
     });
 
     return () => subscription.remove();
+  }, []);
+
+  // Handle background NFC tag (Android only)
+  // When app is launched from a background NFC scan
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+
+    const checkBackgroundTag = async () => {
+      try {
+        const tag = await NfcManager.getBackgroundTag();
+        if (tag && tag.ndefMessage) {
+          // Parse the tag using our NFC manager
+          for (const record of tag.ndefMessage) {
+            try {
+              const { Ndef } = require('react-native-nfc-manager');
+              const uri = Ndef.uri.decodePayload(record.payload);
+              if (uri && uri.startsWith('tapmove://pay')) {
+                const paymentId = uri.split('id=')[1];
+                if (paymentId) {
+                  logger.info('[NFC] Background tag detected', { paymentId });
+                  router.push(`/pay/${paymentId}`);
+                }
+              }
+            } catch {
+              // Try text record
+              try {
+                const { Ndef } = require('react-native-nfc-manager');
+                const text = Ndef.text.decodePayload(record.payload);
+                if (text && text.startsWith('tapmove://pay')) {
+                  const paymentId = text.split('id=')[1];
+                  if (paymentId) {
+                    logger.info('[NFC] Background tag detected (text)', { paymentId });
+                    router.push(`/pay/${paymentId}`);
+                  }
+                }
+              } catch {
+                // Not a parseable record
+              }
+            }
+          }
+          // Clear the background tag after processing
+          await NfcManager.clearBackgroundTag();
+        }
+      } catch (error) {
+        // No background tag or NFC not available
+        logger.debug('[NFC] No background tag found');
+      }
+    };
+
+    // Small delay to ensure NFC is initialized
+    const timeoutId = setTimeout(checkBackgroundTag, 500);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
