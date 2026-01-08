@@ -16,7 +16,7 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 const required = ['MOVEMENT_RPC_URL'];
 
 // Optional but recommended
-const recommended = ['PAYMENT_MODULE', 'WEBHOOK_SECRET'];
+const recommended = ['PAYMENT_MODULE', 'WEBHOOK_SECRET', 'SHINAMI_KEY'];
 
 // Validate required variables in production
 if (process.env.NODE_ENV === 'production') {
@@ -48,6 +48,12 @@ export const config = {
     faucetUrl: process.env.MOVEMENT_FAUCET_URL || 'https://faucet.testnet.porto.movementlabs.xyz',
     paymentModule: process.env.PAYMENT_MODULE,
     merchantModule: process.env.MERCHANT_MODULE,
+  },
+
+  // Shinami Gas Station (for gasless transactions)
+  shinami: {
+    apiKey: process.env.SHINAMI_KEY,
+    enabled: !!process.env.SHINAMI_KEY,
   },
 
   // Database
@@ -89,6 +95,7 @@ export function printConfigSummary() {
   console.log(`  Port: ${config.port}`);
   console.log(`  Movement RPC: ${config.movement.rpcUrl}`);
   console.log(`  Database: ${config.database.path}`);
+  console.log(`  Gas Station: ${config.shinami.enabled ? '✅ Enabled (gasless transactions)' : '❌ Disabled (user pays gas)'}`);
   if (config.isDev) {
     console.log(`  CORS Origins: ${config.cors.origins.join(', ')}`);
   }

@@ -1,4 +1,6 @@
-import dotenv from 'dotenv';
+// Load environment variables FIRST (must be before other imports in ES modules)
+import 'dotenv/config';
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -11,8 +13,6 @@ import { startExpiryChecker, stopExpiryChecker, getExpiryCheckerStatus } from '.
 import { db } from './lib/db.js';
 import { requestLogger, errorLogger } from './middleware/logger.js';
 import { apiLimiter } from './middleware/rate-limit.js';
-
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4001;

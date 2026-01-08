@@ -12,6 +12,7 @@ import {
   Hex,
   Deserializer,
 } from '@aptos-labs/ts-sdk';
+import { isGasStationEnabled, sponsorAndSubmit } from '../lib/shinami.js';
 
 // Network configuration - uses environment variables with sensible defaults
 const NETWORK = process.env.NETWORK || 'testnet';
@@ -56,6 +57,7 @@ export function getNetworkConfig() {
     explorerUrl: config.explorerUrl,
     tapmoveAddress: TAPMOVE_MODULE_ADDRESS,
     coinType: COIN_TYPE,
+    gasSponsored: isGasStationEnabled(), // Indicates if transactions are gasless
   };
 }
 
@@ -102,9 +104,12 @@ export async function buildPaymentTransaction(sender, recipient, amount, payment
     };
   }
 
+  // Build transaction with fee payer support if Shinami Gas Station is enabled
+  const useGasStation = isGasStationEnabled();
   const rawTxn = await aptos.transaction.build.simple({
     sender: senderAddress,
     data: txnData,
+    withFeePayer: useGasStation, // Enable fee payer for Shinami sponsorship
   });
 
   const message = generateSigningMessageForTransaction(rawTxn);
@@ -125,6 +130,8 @@ export async function buildPaymentTransaction(sender, recipient, amount, payment
 export async function buildTransaction(sender, func, typeArguments, functionArguments) {
   const senderAddress = AccountAddress.from(sender);
 
+  // Build with fee payer support if Shinami Gas Station is enabled
+  const useGasStation = isGasStationEnabled();
   const rawTxn = await aptos.transaction.build.simple({
     sender: senderAddress,
     data: {
@@ -132,13 +139,14 @@ export async function buildTransaction(sender, func, typeArguments, functionArgu
       typeArguments: typeArguments || [],
       functionArguments,
     },
+    withFeePayer: useGasStation,
   });
 
   const message = generateSigningMessageForTransaction(rawTxn);
   const hash = toHex(message);
   const rawTxnHex = rawTxn.bcsToHex().toString();
 
-  return { hash, rawTxnHex };
+  return { hash, rawTxnHex, gasSponsored: useGasStation };
 }
 
 /**
@@ -166,6 +174,7 @@ function processPublicKey(publicKey) {
 
 /**
  * Submit a signed transaction
+ * Uses Shinami Gas Station for sponsored (gasless) transactions if configured
  */
 export async function submitTransaction(rawTxnHex, publicKey, signature) {
   const processedPublicKey = processPublicKey(publicKey);
@@ -179,10 +188,8 @@ export async function submitTransaction(rawTxnHex, publicKey, signature) {
     new Deserializer(Hex.fromHexInput(rawTxnHex).toUint8Array())
   );
 
-  const pendingTxn = await aptos.transaction.submit.simple({
-    transaction: rawTxn,
-    senderAuthenticator,
-  });
+  // Use Shinami Gas Station if enabled, otherwise direct submission
+  const pendingTxn = await sponsorAndSubmit(rawTxn, senderAuthenticator, aptos);
 
   const executedTxn = await aptos.waitForTransaction({
     transactionHash: pendingTxn.hash,
@@ -192,6 +199,7 @@ export async function submitTransaction(rawTxnHex, publicKey, signature) {
     success: executedTxn.success,
     hash: executedTxn.hash,
     vmStatus: executedTxn.vm_status,
+    sponsored: isGasStationEnabled(), // Indicate if transaction was sponsored
   };
 }
 

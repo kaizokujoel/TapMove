@@ -25,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "@aptos-labs/ts-sdk": "^5.1.1",
+    "@shinami/clients": "^0.9.8",
     "axios": "^1.7.4",
     "better-sqlite3": "^12.5.0",
     "cors": "^2.8.5",
