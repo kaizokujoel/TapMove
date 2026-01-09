@@ -195,6 +195,23 @@ Use `/run-prompt N` where N is the prompt number (e.g., `/run-prompt 1`).
 
 ---
 
+## Vercel Deployment
+
+### Landing Web (`landing-web/`)
+- **Deployed via Vercel CLI** (NOT git auto-deploy)
+- Vercel project name: `tapmove-m1-hack`
+- This is a Next.js landing page that directs users to download the mobile app
+
+**Deployment command:**
+```bash
+cd landing-web
+vercel --prod
+```
+
+**Important:** Do NOT assume git push triggers deployment. Always use `vercel --prod` from the `landing-web` directory.
+
+---
+
 ## Project Structure
 
 ```
@@ -220,6 +237,10 @@ TapMove/
 │   ├── components/               # UI components
 │   ├── hooks/                    # Custom hooks
 │   └── lib/                      # Services, utilities
+│
+├── landing-web/                  # Next.js landing page (Vercel CLI deploy)
+│   ├── app/                      # Next.js app router
+│   └── .vercel/                  # Vercel project config
 │
 ├── contracts/                    # Move Smart Contracts
 │   ├── sources/                  # Move modules
